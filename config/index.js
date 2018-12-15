@@ -19,23 +19,25 @@ const path = require('path')
 // module.exports.x = x;
 
 module.exports = {
+  // 开发过程中使用的配置
   dev: {
-
+    // 调用环境配置
+    env: require('./dev.env'),//webpack的编译环境
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {},// 请求代理表，在这里可以配置特定的请求代理到对应的API接口
 
     // 开发服务器设置
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: true,
+    port: 8080, // dev-server监听的端口
+    autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
     // 默认使用Eslint-JS代码检查工具
-    useEslint: true,
+    useEslint: false,
     // 值为true，则检查的警告和错误将会在浏览器中显示
     showEslintErrorsInOverlay: false,
 
@@ -48,7 +50,7 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: true
+    cssSourceMap: true // 是否开启 cssSourceMap
   },
 
   // 构建产品时使用的配置
