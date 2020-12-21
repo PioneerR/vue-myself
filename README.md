@@ -2,7 +2,7 @@
 
 > A Vue.js project
 
-## Build Setup
+## 圈子 - 关系管理项目 - 第一个vue实战项目
 
 ``` bash
 # install dependencies
