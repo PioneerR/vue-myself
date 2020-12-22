@@ -7,6 +7,7 @@ Vue.use(Router);
 const HelloWorld = resolve => require(['@/components/HelloWorld'], resolve);
 // 首页
 const Index = resolve => require(['@/components/Index'], resolve);
+const Login = resolve => require(['@/components/Login'], resolve);
 
 // 路由
 export default new Router({
@@ -19,8 +20,13 @@ export default new Router({
 			component: Index
 		},
 		{
+			path: '/login',
+			component: Login
+		},
+		{
 			path: '/index',
-			component: HelloWorld
+			component: HelloWorld,
+			meta:{ requireAuth:true }
 		}
 	]
 })
