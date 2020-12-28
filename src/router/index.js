@@ -6,8 +6,8 @@ Vue.use(Router);
 // 引入自定义组件 - 懒加载(提高页面加载速度)
 const HelloWorld = resolve => require(['@/components/HelloWorld'], resolve);
 // 首页
-const Index = resolve => require(['@/components/Index'], resolve);
-const Login = resolve => require(['@/components/Login'], resolve);
+const Index = resolve => require(['@/components/index'], resolve);
+const Login = resolve => require(['@/components/login'], resolve);
 
 // 路由
 export default new Router({
@@ -24,7 +24,7 @@ export default new Router({
 			component: Login
 		},
 		{
-			path: '/index',
+			path: '/hello',
 			component: HelloWorld,
 			meta:{ requireAuth:true }
 		}
