@@ -6,12 +6,15 @@ import axios from "axios"		// 引入ajax
 import router from './router'	// 引入路由配置
 import App from './App'			// 引入根组件App.vue
 import qs from 'qs'	 			// 能把json格式的直接转成data所需的格式
+// import $ from 'zepto'			// 轻量级的jQuery
+
 
 /* ------------------- 引入 - 插件 - UI --------------------- */
 
 import ElementUI from 'element-ui'	// 饿了么ui组件库
 import {Picker} from 'mint-ui' 		// 移动端ui组件库
 import {Search} from 'mint-ui'
+
 
 /* ------------------- 引入 - CSS --------------------------- */
 
@@ -81,7 +84,7 @@ router.beforeEach((to, from, next) =>{
 			if(!debug){
 				window.location.href = this.apiUrl + "/weixin/login?shareUserId=" + shareUserId;
 			}
-			// 测试环境
+			// 本地环境
 			else{
 				next('/login');
 			}
