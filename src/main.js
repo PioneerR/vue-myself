@@ -2,11 +2,12 @@ import Vue from 'vue'
 
 /* ------------------- 引入 - 插件 -------------------------- */
 
-import axios from "axios"		// 引入ajax
-import router from './router'	// 引入路由配置
-import App from './App'			// 引入根组件App.vue
-import qs from 'qs'	 			// 能把json格式的直接转成data所需的格式
-// import $ from 'zepto'			// 轻量级的jQuery
+import axios from "axios"				// 引入ajax
+import vueResource from 'vue-resource'	// $http.post()
+import router from './router'			// 引入路由配置
+import App from './App'					// 引入根组件App.vue
+import qs from 'qs'	 					// 能把json格式的直接转成data所需的格式
+// import $ from 'zepto'				// 轻量级的jQuery
 
 
 /* ------------------- 引入 - 插件 - UI --------------------- */
@@ -26,6 +27,7 @@ import {Search} from 'mint-ui'
 /* --------------------- 注册 - 插件 ------------------------ */
 
 Vue.use(ElementUI);
+Vue.use(vueResource);
 
 
 
@@ -65,26 +67,27 @@ else if(!debug && !wxDebug){
 }
 
 
-// 路由 - 前处理
+// 路由 - 前处理 - 微信授权登陆 or 账号密码登陆
 router.beforeEach((to, from, next) =>{
 	// 分享id
-	var shareUserId = window.sessionStorage.getItem("shareUserId");
+	/*var shareUserId = window.sessionStorage.getItem("shareUserId");
 	if(shareUserId == undefined || shareUserId == 'undefined'){
 		shareUserId = to.query.shareUserId;
 	}
 	shareUserId = undefined == shareUserId ? 0 : shareUserId;
-	window.sessionStorage.setItem("shareUserId", shareUserId);
+	window.sessionStorage.setItem("shareUserId", shareUserId);*/
 
 
-	// 要求授权，且路径不是登录和首页时，获取当前登录用户后，next()
-	if(to.meta.requireAuth && to.path != '/' && to.path != '/login'){
+	// 要求授权，且访问路径不是登录页时，获取当前登录用户后，next()
+	if(to.meta.requireAuth && to.path != '/login'){
 		var user = window.sessionStorage.getItem("user") != 'undefined' ? JSON.parse(window.sessionStorage.getItem("user")) : null;
 		if(user == null || user == undefined){
-			// 微信授权登录 - 测试环境、正式环境
+			// 测试环境、正式环境 - 微信授权登录
 			if(!debug){
-				window.location.href = this.apiUrl + "/weixin/login?shareUserId=" + shareUserId;
+				// path中有特殊字符，传输到后端时，需要转义
+				window.location.href = this.apiUrl + "/wx/login?path=" + encodeURIComponent(to.path);
 			}
-			// 本地环境
+			// 本地环境 - 账号密码登陆
 			else{
 				next('/login');
 			}
