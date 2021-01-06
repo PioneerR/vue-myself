@@ -3,6 +3,16 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 
+
+// 引入自定义组件 - 懒加载(提高页面加载速度)
+const hello = resolve => require(['@/components/helloWorld'], resolve);
+
+// 首页
+const index = resolve => require(['@/components/index'], resolve);
+const login = resolve => require(['@/components/login'], resolve);
+const auth = resolve => require(['@/components/view/auth'], resolve);
+
+
 // 路由
 export default new Router({
 	// mode: 'hash', 访问路径为：localhost:8080/#/index
@@ -11,7 +21,11 @@ export default new Router({
 	routes: [
 		{
 			path: "",
-			redirect: "/auth"
+			redirect: "/auth",
+		},
+		{
+			path: "/auth",
+			component: auth
 		},
 		{
 			path: "/login",
@@ -19,17 +33,10 @@ export default new Router({
 			meta:{ requireAuth:true }
 		},
 		{
-			path: "/hello",
-			component: hello,
+			path: "/index",
+			component: index,
 			meta:{ requireAuth:true }
 		}
 	]
 })
 
-
-// 引入自定义组件 - 懒加载(提高页面加载速度)
-const hello = resolve => require(['@/components/helloWorld'], resolve);
-
-// 首页
-const index = resolve => require(['@/components/index'], resolve);
-const login = resolve => require(['@/components/login'], resolve);

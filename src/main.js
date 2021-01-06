@@ -7,7 +7,7 @@ import vueResource from 'vue-resource'	// $http.post()
 import router from './router'			// 引入路由配置
 import App from './App'					// 引入根组件App.vue
 import qs from 'qs'	 					// 能把json格式的直接转成data所需的格式
-// import $ from 'zepto'				// 轻量级的jQuery
+import $ from 'jquery'					// 轻量级的jQuery
 
 
 /* ------------------- 引入 - 插件 - UI --------------------- */
@@ -29,6 +29,9 @@ import {Search} from 'mint-ui'
 Vue.use(ElementUI);
 Vue.use(vueResource);
 
+// 注册 - jquery插件
+window.jQuery = $;
+window.$ = $;
 
 
 /* --------------------- 注册 - 全局组件 -------------------- */
