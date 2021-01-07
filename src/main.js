@@ -1,5 +1,10 @@
 import Vue from 'vue'
 
+/*-------------------- 引入 - 自定义js ---------------------------*/
+
+import * as rem from '../static/js/rem-px.js';	//
+
+
 /* ------------------- 引入 - 插件 -------------------------- */
 
 import axios from "axios"				// 引入ajax
@@ -8,26 +13,40 @@ import router from './router'			// 引入路由配置
 import App from './App'					// 引入根组件App.vue
 import qs from 'qs'	 					// 能把json格式的直接转成data所需的格式
 import $ from 'jquery'					// 轻量级的jQuery
+import exif from 'exif-js';				// 图片旋转
+import clipboard from 'vue-clipboard2';	// 剪切板
+import waterfall from 'vue-waterfall2';	// 瀑布流布局
 
 
 /* ------------------- 引入 - 插件 - UI --------------------- */
 
-import ElementUI from 'element-ui'	// 饿了么ui组件库
-import {Picker} from 'mint-ui' 		// 移动端ui组件库
-import {Search} from 'mint-ui'
+import vant from 'vant';				// 组件库
+import ElementUI from 'element-ui'		// 饿了么ui组件库
+
+import {Search} from 'mint-ui';			// 移动端ui组件库 - 搜索框
+import {Popup} from 'mint-ui';			// 移动端ui组件库 - 弹出框
+import {Picker} from 'mint-ui' 			// 移动端ui组件库 - 单选
+import {Cell} from 'mint-ui';			// 移动端ui组件库 - 单元格
+import {Loadmore} from 'mint-ui';		// 移动端ui组件库 - 下拉/上拉刷新
+import {InfiniteScroll} from 'mint-ui';	// 移动端ui组件库 - 无限滚动
+import {Toast} from 'mint-ui';			// 移动端ui组件库 - 简短消息提示框
 
 
 /* ------------------- 引入 - CSS --------------------------- */
 
-
-
-
+import 'element-ui/lib/theme-chalk/index.css';
+import 'mint-ui/lib/style.css'
+import 'vant/lib/index.css';
 
 
 /* --------------------- 注册 - 插件 ------------------------ */
 
 Vue.use(ElementUI);
 Vue.use(vueResource);
+Vue.use(InfiniteScroll);
+Vue.use(vant);
+Vue.use(clipboard);
+Vue.use(waterfall);
 
 // 注册 - jquery插件
 window.jQuery = $;
@@ -36,18 +55,23 @@ window.$ = $;
 
 /* --------------------- 注册 - 全局组件 -------------------- */
 
+Vue.component(Cell.name, Cell);
 Vue.component(Search.name, Search);
-
-
+Vue.component(Popup.name, Popup);
+Vue.component(Toast.name, Toast);
+Vue.component(Picker.name, Picker);
+Vue.component(Loadmore.name, Loadmore);
 
 
 /* ------------- 定义 - 原型属性/全局属性/常量 --------------- */
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$qs = qs;
+Vue.prototype.$exif = exif;
 
 Vue.prototype.imgUrl = 'http://oss.yzmjnts.com/images';
 Vue.prototype.fileUrl = 'http://oss.yzmjnts.com/file';
+
 
 
 // true  true  : 本地环境

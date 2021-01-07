@@ -1,86 +1,53 @@
 <template>
 	<div>
 		<div class="head-div">
-			<span :class="{'on': type == 0}" @click="choose(0)">手机验证码登录</span>
+<!--			<span :class="{'on': type == 0}" @click="choose(0)">手机验证码登录</span>-->
 			<span :class="{'on': type == 1}" @click="choose(1)">账号密码登录</span>
 		</div>
 		
 		<div class="content">
 			<div class="borderBot code">
 				<input type="text" v-model="phone" placeholder="请输入您的手机号"/>
-				<span v-if="type == 0" @click="getCode" class="gray">{{btnSendCodeTitle}}</span>
+<!--				<span v-if="type == 0" @click="getCode" class="gray">发送验证码</span>-->
 			</div>
 			
 			<div class="borderBot">
-				<input v-if="type == 0" type="text" v-model="code" placeholder="请输入验证码"/>
-				<input v-else type="text" v-model="password" placeholder="请输入密码"/>
+<!--				<input v-if="type == 0" type="text" v-model="code" placeholder="请输入验证码"/>-->
+				<input type="text" v-model="password" placeholder="请输入密码"/>
 			</div>
 			
-			<div class="borderBot" v-if="loginCount > 3">
+			<!--<div class="borderBot" v-if="loginCount > 3">
 				<input type="text" v-model="imageCode" placeholder="请输入图形验证码"/>
 				<div class="letter">
 					<img alt="" id="authCode" :src="imgCodeUrl" @click="changeImg"/>
 				</div>
-			</div>
+			</div>-->
 			<div class="icon" @click="login">登录</div>
 			<!-- <div class="icon" @click="goWeixinLogin">wx登录</div>	 -->
-			<div class="tip" @click="register">还没账号？立即注册></div>
+			<div class="tip" @click="goRegister">还没账号？立即注册></div>
 		</div>
 	</div>
 </template>
 
 
 <script>
-	import *as rem from '../../static/js/rem-px.js';
-	import * as loginJs from '../api/user/user.js';
 	
 	export default {
 		data() {
 			return {
-				show: true,
-				count: '',
-				timer: null,
 				type: 0,
 				phone: '',
-				code: '',
-				loginCount: 0,
-				password: '',
-				imageCode: '',
-				imgCodeUrl: '',
-				userAgent: '',
-				inviteCode: '',
-				share: null,
-				shareCode: '',
-				shareType: '',
-				btnSendCodeTitle: '发送验证码',
-				goDefaultUrl: null
+				password: ''
 			}
 		},
 		methods: {
-			// 获取验证码
-			getCode: function () {
-				if (this.phone == "") {
-					this.$message({
-						showClose: true,
-						type: 'warning',
-						message: "请填写手机号"
-					});
-					return;
-				}
-				if (this.phone.length == 15) {
-					this.$message({
-						showClose: true,
-						type: 'warning',
-						message: "请选择账号密码登录！"
-					});
-					return;
-				}
-				if (this.btnSendCodeTitle != "发送验证码") return;
-				loginJs.getCode(this);
+			// GO - 注册页面
+			goRegister(){
+				this.$router.push("/register");
 			},
-
+			
 			// 登录
-			login: function () {
+			login() {
 				if (this.type == 0) {
 					if (this.phone.length == 15) {
 						this.$message({
@@ -121,47 +88,8 @@
 					}
 
 				}
-
-				//手机验证码登陆
-				if (this.type == 0) {
-					if (this.loginCount > 3) {
-						loginJs.userLogin(this);
-					} else {
-						loginJs.userLoginV2(this);
-					}
-				} else {
-					if (this.password == '') {
-						this.$message({
-							showClose: true,
-							type: 'warning',
-							message: "请输入密码"
-						});
-						return;
-					}
-					if (this.loginCount > 3) {
-						loginJs.passwordLogin(this);
-					} else {
-						loginJs.passwordLoginV2(this);
-					}
-				}
-
-			},
-
-			// 注册
-			register: function () {
-				this.$router.push("/register");
-			},
-
-			// 更改验证码
-			changeImg: function () {
-				$("#authCode").attr("src", this.imgCodeUrl);
-				this.imgCodeUrl = this.adminApiUrl + "/user/get-image-code?userAgent=" + this.userAgent + "&time=" + Date.parse(new Date());
-			},
-			
-			//选择
-			choose(type) {
-				this.type = type
 			}
+			
 		}
 	}
 </script>

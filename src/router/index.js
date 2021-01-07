@@ -9,6 +9,7 @@ const hello = resolve => require(['@/components/helloWorld'], resolve);
 
 // 首页
 const index = resolve => require(['@/components/index'], resolve);
+const register = resolve => require(['@/components/view/register'], resolve);
 const login = resolve => require(['@/components/login'], resolve);
 const auth = resolve => require(['@/components/view/auth'], resolve);
 
@@ -26,6 +27,10 @@ export default new Router({
 		{
 			path: "/auth",
 			component: auth
+		},
+		{
+			path: "/register",
+			component: register
 		},
 		{
 			path: "/login",
