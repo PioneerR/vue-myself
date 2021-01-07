@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 /*-------------------- 引入 - 自定义js ---------------------------*/
 
-import * as rem from '../static/js/rem-px.js';	//
+import * as rem from '../static/js/rem-px.js';	// 字体大小转换
 
 
 /* ------------------- 引入 - 插件 -------------------------- */
@@ -36,7 +36,6 @@ import {Toast} from 'mint-ui';			// 移动端ui组件库 - 简短消息提示框
 
 import 'element-ui/lib/theme-chalk/index.css';
 import 'mint-ui/lib/style.css'
-import 'vant/lib/index.css';
 
 
 /* --------------------- 注册 - 插件 ------------------------ */

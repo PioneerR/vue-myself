@@ -1,18 +1,18 @@
 <template>
 	<div>
 		<div class="head-div">
-<!--			<span :class="{'on': type == 0}" @click="choose(0)">手机验证码登录</span>-->
+			<!--			<span :class="{'on': type == 0}" @click="choose(0)">手机验证码登录</span>-->
 			<span :class="{'on': type == 1}" @click="choose(1)">账号密码登录</span>
 		</div>
 		
 		<div class="content">
 			<div class="borderBot code">
 				<input type="text" v-model="phone" placeholder="请输入您的手机号"/>
-<!--				<span v-if="type == 0" @click="getCode" class="gray">发送验证码</span>-->
+				<!--				<span v-if="type == 0" @click="getCode" class="gray">发送验证码</span>-->
 			</div>
 			
 			<div class="borderBot">
-<!--				<input v-if="type == 0" type="text" v-model="code" placeholder="请输入验证码"/>-->
+				<!--				<input v-if="type == 0" type="text" v-model="code" placeholder="请输入验证码"/>-->
 				<input type="text" v-model="password" placeholder="请输入密码"/>
 			</div>
 			
@@ -31,7 +31,7 @@
 
 
 <script>
-	
+
 	export default {
 		data() {
 			return {
@@ -89,7 +89,7 @@
 
 				}
 			}
-			
+
 		}
 	}
 </script>
