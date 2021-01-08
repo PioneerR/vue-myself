@@ -30,7 +30,7 @@ module.exports = {
 
     // 开发服务器设置
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // dev-server监听的端口
+    port: 8081, // dev-server监听的端口
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

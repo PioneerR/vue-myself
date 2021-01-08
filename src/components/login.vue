@@ -31,11 +31,13 @@
 
 
 <script>
+	import * as rem from '../../static/js/rem-px.js';	// 字体大小转换
+	import * as loginApi from '../api/login.js';
 
 	export default {
 		data() {
 			return {
-				type: 0,
+				type: 1,
 				phone: '',
 				password: ''
 			}
@@ -48,16 +50,10 @@
 			
 			// 登录
 			login() {
-				if (this.type == 0) {
-					if (this.phone.length == 15) {
-						this.$message({
-							showClose: true,
-							type: 'warning',
-							message: "请选择账号密码登录！"
-						});
-						return;
-					}
-					if (!(/^1[3-9][0-9]\d{8}$/.test(this.phone))) {
+				// 手机号验证
+				if (this.phone.length == 15) {
+					var realPhone = this.phone.substring(0, this.phone.length - 4);
+					if (!(/^1[3-9][0-9]\d{8}$/.test(realPhone))) {
 						this.$message({
 							showClose: true,
 							type: 'warning',
@@ -66,30 +62,30 @@
 						return;
 					}
 				} else {
-					if (this.phone.length == 15) {
-						var realPhone = this.phone.substring(0, this.phone.length - 4);
-						if (!(/^1[3-9][0-9]\d{8}$/.test(realPhone))) {
-							this.$message({
-								showClose: true,
-								type: 'warning',
-								message: "请输入正确的手机号码！"
-							});
-							return;
-						}
-					} else {
-						if (!(/^1[3-9][0-9]\d{8}$/.test(this.phone))) {
-							this.$message({
-								showClose: true,
-								type: 'warning',
-								message: "请输入正确的手机号码！"
-							});
-							return;
-						}
+					if (!(/^1[3-9][0-9]\d{8}$/.test(this.phone))) {
+						this.$message({
+							showClose: true,
+							type: 'warning',
+							message: "请输入正确的手机号码！"
+						});
+						return;
 					}
-
 				}
+				
+				// 密码验证
+				if (this.password == '') {
+					this.$message({
+						showClose: true,
+						type: 'warning',
+						message: "请输入密码"
+					});
+					return;
+				}
+				
+				// 执行 - 登录
+				loginApi.login(this);
+				return;
 			}
-
 		}
 	}
 </script>

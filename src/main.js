@@ -1,9 +1,5 @@
 import Vue from 'vue'
 
-/*-------------------- 引入 - 自定义js ---------------------------*/
-
-import * as rem from '../static/js/rem-px.js';	// 字体大小转换
-
 
 /* ------------------- 引入 - 插件 -------------------------- */
 
@@ -92,6 +88,14 @@ else if(!debug && !wxDebug){
 	Vue.prototype.apiUrl = 'http://www.sx.com/api';
 }
 
+/* --------------------- axios - 参数配置 -------------------- */
+
+axios.defaults.baseURL = Vue.prototype.apiUrl;	// axios访问路径前缀
+
+
+
+
+/* ------------------ 路由 - 前处理/后处理 ------------------ */
 
 // 路由 - 前处理 - 微信授权登陆 or 账号密码登陆
 router.beforeEach((to, from, next) =>{
@@ -106,6 +110,7 @@ router.beforeEach((to, from, next) =>{
 
 	// 要求授权，且访问路径不是登录页时，获取当前登录用户后，next()
 	if(to.meta.requireAuth && to.path != '/login'){
+		// console.log("进入页面，需要授权");
 		var user = window.sessionStorage.getItem("user") != 'undefined' ? JSON.parse(window.sessionStorage.getItem("user")) : null;
 		if(user == null || user == undefined){
 			// 测试环境、正式环境 - 微信授权登录
@@ -120,6 +125,7 @@ router.beforeEach((to, from, next) =>{
 			return;
 		}
 	}
+	// console.log("不需要授权，直接通过");
 	next();
 });
 
