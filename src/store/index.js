@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+// Store数据中心
 // vuex的数据链路：methods先dispatch到actions --> actions再commit到mutations的方法 --> mutations的方法更改state的数据值
 export default new Vuex.Store({
 	state,

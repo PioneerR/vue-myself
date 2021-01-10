@@ -8,7 +8,8 @@ import vueResource from 'vue-resource'	// $http.post()
 import router from './router'			// 引入路由配置
 import App from './App'					// 引入根组件App.vue
 import qs from 'qs'	 					// 能把json格式的直接转成data所需的格式
-import $ from 'jquery'					// 轻量级的jQuery
+import $ from 'jquery'					// jQuery
+// import $ from 'zepto'				// 轻量级的jQuery
 import exif from 'exif-js';				// 图片旋转
 import clipboard from 'vue-clipboard2';	// 剪切板
 import waterfall from 'vue-waterfall2';	// 瀑布流布局
@@ -32,6 +33,7 @@ import {Toast} from 'mint-ui';			// 移动端ui组件库 - 简短消息提示框
 
 import 'element-ui/lib/theme-chalk/index.css';
 import 'mint-ui/lib/style.css'
+import response from "vue-resource/src/http/response";
 
 
 /* --------------------- 注册 - 插件 ------------------------ */
@@ -88,10 +90,39 @@ else if(!debug && !wxDebug){
 	Vue.prototype.apiUrl = 'http://www.sx.com/api';
 }
 
+
+
+
 /* --------------------- axios - 参数配置 -------------------- */
 
 axios.defaults.baseURL = Vue.prototype.apiUrl;	// axios访问路径前缀
 
+/* ----------------- axios - 请求前/请求后处理 --------------- */
+
+// 请求前处理
+axios.interceptors.request.use(config =>{
+	// 请求头加上sysToken、userId
+	var user = window.sessionStorage.getItem("user");
+	var token, userId;
+	if(user != undefined && user != null){
+		user = JSON.parse(user);
+		token = user.sysToken;
+		userId = user.id;
+	}
+	// 如果token存在，http header加上token和userId
+	if(token){
+		config.headers.Authorization = token;
+		config.headers.userId = userId;
+	}
+	return config;
+});
+
+// 请求后处理
+axios.interceptors.response.use(response =>{
+
+
+
+});
 
 
 
@@ -134,6 +165,7 @@ router.beforeEach((to, from, next) =>{
 router.afterEach((to, from, next) =>{
 	window.scrollTo(0, 0);
 });
+
 
 
 /* --------------------- 初始化 - 实例 --------------------- */
