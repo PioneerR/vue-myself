@@ -3,13 +3,13 @@ import Vue from 'vue'
 
 /* ------------------- 引入 - 插件 -------------------------- */
 
+import $ from 'jquery'					// jQuery
+// import $ from 'zepto'				// 轻量级的jQuery
 import axios from "axios"				// 引入ajax
-import vueResource from 'vue-resource'	// $http.post()
+import VueResource from 'vue-resource'	// $http.post()
 import router from './router'			// 引入路由配置
 import App from './App'					// 引入根组件App.vue
 import qs from 'qs'	 					// 能把json格式的直接转成data所需的格式
-import $ from 'jquery'					// jQuery
-// import $ from 'zepto'				// 轻量级的jQuery
 import exif from 'exif-js';				// 图片旋转
 import clipboard from 'vue-clipboard2';	// 剪切板
 import waterfall from 'vue-waterfall2';	// 瀑布流布局
@@ -27,7 +27,7 @@ import {Cell} from 'mint-ui';			// 移动端ui组件库 - 单元格
 import {Loadmore} from 'mint-ui';		// 移动端ui组件库 - 下拉/上拉刷新
 import {InfiniteScroll} from 'mint-ui';	// 移动端ui组件库 - 无限滚动
 import {Toast} from 'mint-ui';			// 移动端ui组件库 - 简短消息提示框
-import {Indicator} from 'mint-ui';			// 移动端ui组件库 - 加载提示框
+import {Indicator} from 'mint-ui';		// 移动端ui组件库 - 加载提示框
 
 
 /* ------------------- 引入 - CSS --------------------------- */
@@ -40,7 +40,7 @@ import response from "vue-resource/src/http/response";
 /* --------------------- 注册 - 插件 ------------------------ */
 
 Vue.use(ElementUI);
-Vue.use(vueResource);
+Vue.use(VueResource);
 Vue.use(InfiniteScroll);
 Vue.use(vant);
 Vue.use(clipboard);
@@ -79,7 +79,8 @@ const wxDebug = true;
 
 // 本地环境
 if (debug && wxDebug) {
-	Vue.prototype.apiUrl = 'http://localhost:8080/api';
+	Vue.prototype.apiUrl = 'http://localhost:8080/api';	// 接口访问路径
+	Vue.prototype.url = 'http://localhost:8081';		// 用户访问路径
 }
 // 测试环境
 else if (!debug && wxDebug) {
@@ -88,6 +89,7 @@ else if (!debug && wxDebug) {
 // 正式环境
 else if (!debug && !wxDebug) {
 	Vue.prototype.apiUrl = 'http://www.sx.com/api';
+	Vue.prototype.url = 'http://www.sx.com';
 }
 
 
@@ -121,6 +123,7 @@ axios.interceptors.request.use(config => {
 	if (token) {
 		config.headers.Authorization = token;
 		config.headers.userId = userId;
+		config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 	}
 	return config;
 }, error => {
@@ -133,6 +136,21 @@ axios.interceptors.response.use(res => {
 	Indicator.close();
 	return res;
 }, error => {
+	var message = error.response.data.message;
+	Vue.prototype.$message({
+	  showClose: true,
+	  type: 'warning',
+	  message: message
+	});
+
+	// 如果token验证失败，跳转登录页面
+	if(message.indexOf("该用户已在其他设备登录") != -1
+		|| message.indexOf("error user") != -1){
+		// 延时加载
+		setTimeout(function (){
+			location.href= Vue.prototype.url;
+		}, 3000);
+	}
 	return Promise.reject(error);
 });
 
@@ -158,7 +176,7 @@ Vue.http.interceptors.push(function (request, next) {
 		userId = user.id;
 	}
 	// 如果token存在，http header加上token和userId
-	if (token) {
+	if (token != null && token != undefined) {
 		Vue.http.headers.common.Authorization = token;
 		Vue.http.headers.common.userId = userId;
 	}
